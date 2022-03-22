@@ -1,0 +1,547 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:RoboSharp.BackupApp" mc:Ignorable="av" x:Class="RoboSharp.BackupApp.MainWindow"
+        Title="Backup App" Height="700" Width="750" ResizeMode="CanResizeWithGrip" MinWidth="750" MaxWidth="750" MinHeight="650" >
+    <Grid IsSharedSizeScope="True">
+        <TabControl>
+            <TabItem Header="选项" ToolTip="Options" x:Name="OptionsTab">
+                <Grid>
+                    <ScrollViewer Margin="0,0,0,0" VerticalScrollBarVisibility="Auto" Width="Auto" Height="Auto">
+                        <Grid x:Name="OptionsGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="173*"/>
+                                <ColumnDefinition Width="540*"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- Source -->
+                            <TextBlock Grid.Row="1" Margin="34,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="源目录路径" VerticalAlignment="Top" ToolTip="Source"/>
+                            <TextBox x:Name="Source" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="34,20,0,5" TextWrapping="Wrap" VerticalAlignment="Top" Width="560" Grid.ColumnSpan="2"/>
+                            <Button x:Name="SourceBrowseButton" Grid.Row="1" Margin="433,20,0,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Content="浏览" ToolTip="Browse" Click="SourceBrowseButton_Click" Grid.Column="1"/>
+                            <!-- Destination -->
+                            <TextBlock HorizontalAlignment="Left" Grid.Row="2" Margin="34,0,0,0" TextWrapping="Wrap" Text="目标目录路径" ToolTip="Destination" VerticalAlignment="Top"/>
+                            <TextBox x:Name="Destination" Grid.Row="2" HorizontalAlignment="Left" Height="23" Margin="34,20,0,5" TextWrapping="Wrap" VerticalAlignment="Top" Width="560" Grid.ColumnSpan="2"/>
+                            <Button x:Name="DestinationBrowseButton" Grid.Row="2" Margin="433,20,0,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Content="浏览" ToolTip="Browse" Click="DestinationBrowseButton_Click" Grid.Column="1"/>
+                            <!-- Job Name -->
+                            <TextBlock HorizontalAlignment="Left"  Grid.Row="3" Margin="34,0,0,0" TextWrapping="Wrap" Text="作业选项" ToolTip="Job Name (Optional)" VerticalAlignment="Center" />
+                            <TextBox x:Name="JobName"  Grid.Row="3" HorizontalAlignment="Left" Height="23" Margin="159,5,0,5" TextWrapping="Wrap" VerticalAlignment="Center" Width="175" Grid.ColumnSpan="2"/>
+                            <!-- Job Options -->
+                            <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="34,10,20,10">
+                                <Expander Background="LightBlue" Header="复制选项" ToolTip="Copy Options">
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="File Filter" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" ToolTip="Copy Subdirectories (/S)" Text="复制子目录，但不包括其中的空目录" />
+                                        <TextBlock Grid.Row="2" Grid.Column="0" ToolTip="Copy Subdirectories Including Empty (/E)" Text="复制子目录，包括其中的空目录" />
+                                        <TextBlock Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" ToolTip="Depth (/LEV:N)" Text="复制深度。0代表所有深度都复制。1代表根目录" />
+                                        <TextBlock Grid.Row="4" Grid.Column="0" ToolTip="Enable Restart Mode (/Z)" Text="可重启模式。中断后可从中断位置继续。" />
+                                        <TextBlock Grid.Row="5" Grid.Column="0" ToolTip="Enable Backup Mode (/B)" Text="*备份模式" />
+                                        <TextBlock Grid.Row="6" Grid.Column="0" ToolTip="Enable Restart Mode With Backup Fallback (/ZB)" Text="*可重启模式，若文件访问被拒绝，切换到备份模式" />
+                                        <TextBlock Grid.Row="7" Grid.Column="0" ToolTip="使用无缓冲IO模式（用于大型文件）" Text="*使用无缓冲IO模式（用于大型文件）" />
+                                        <TextBlock Grid.Row="8" Grid.Column="0" ToolTip="Enable EFS Raw Mode (/EFSRAW)" Text="*在 EFS RAW 模式下复制所有加密文件" />
+                                        <TextBlock Grid.Row="9" Grid.Column="0" ToolTip="Copy Flags (/COPY:copyflags)" Text="文件属性标识" />
+                                        <TextBlock Grid.Row="10" Grid.Column="0" ToolTip="Copy Flags (/DCOPY:copyflags)" Text="目录内容标识" />
+                                        <TextBlock Grid.Row="11" Grid.Column="0" ToolTip="Fix File Security On All Files (/SECFIX)" Text="*修复所有文件（甚至跳过的文件）的文件安全性" />
+                                        <TextBlock Grid.Row="12" Grid.Column="0" ToolTip="Copy Files With Security (/SEC)" Text="*安全相关" />
+                                        <TextBlock Grid.Row="13" Grid.Column="0" ToolTip="Copy All (/COPYALL)" Text="复制所有文件信息" />
+                                        <TextBlock Grid.Row="14" Grid.Column="0" ToolTip="Remove File Information (/NOCOPY)" Text="不复制文件信息" />
+                                        <TextBlock Grid.Row="15" Grid.Column="0" ToolTip="Fix File Times On All Files (/TIMFIX)" Text="*修复所有文件（甚至跳过的文件）的文件时间" />
+                                        <!--
+                                        关于修复的原文是这个。不明白这个“修复”的具体效果是什么。
+                                        Fixes file security on all files, even skipped ones.	
+                                        Fixes file times on all files, even skipped ones
+                                        -->
+                                        <TextBlock Grid.Row="16" Grid.Column="0" ToolTip="Purge (/PURGE)" Text="删除源中不再存在的目标文件和目录。&#x0a;与/e一起使用，可允许不覆盖目标目录安全设置" />
+                                        <TextBlock Grid.Row="17" Grid.Column="0" ToolTip="Mirror (/MIR)" Text="镜像复制。完全克隆。效果与（/e /purge）一样"/>
+                                        <TextBlock Grid.Row="18" Grid.Column="0" ToolTip="Move Files (/MOV)" Text="移动文件（只是文件，不移动目录）。&#x0a;也就是剪切。复制后删除源文件" />
+                                        <TextBlock Grid.Row="19" Grid.Column="0" ToolTip="Move Files and Directories (/MOVE)" Text="移动文件和目录。其余同上。" />
+                                        <TextBlock Grid.Row="20" Grid.Column="0" ToolTip="Add Attributes (/A+:attributes)" Text="*指定的属性添加到复制的文件" />
+                                        <TextBlock Grid.Row="21" Grid.Column="0" ToolTip="Remove Attributes (/A-:attributes)" Text="*在复制的文件删除指定的属性" />
+                                        <TextBlock Grid.Row="22" Grid.Column="0" ToolTip="Create Directory and File Tree (/CREATE)" Text="仅复制文件结构，不会复制文件" />
+                                        <!--
+                                        robocopy Source Destination /e /lev:5
+                                        一种仅复制文件结构的写法。功能其实和/create一模一样。思想是复制⑩，限制一个源目录中不存在的一个修改日期。这样就只会复制文件夹，不复制文件了
+                                        -->
+                                        <TextBlock Grid.Row="23" Grid.Column="0" ToolTip="Fat Files (/FAT)" Text="*仅使用 8.3 个字符长度的 FAT 文件名创建目标文件" />
+                                        <TextBlock Grid.Row="24" Grid.Column="0" ToolTip="Turn Long Path Support Off (/256)" Text="*关闭对超过 256 个字符的路径的支持" />
+                                        <TextBlock Grid.Row="25" Grid.Column="0" ToolTip="Monitor Source Changes Limit (/MON:N)" Text="监视源，并检测到 n 次以上更改时运行" />
+                                        <TextBlock Grid.Row="26" Grid.Column="0" ToolTip="Monitor Source Time Limit (/MOT:N)" Text="监视源，如果检测到更改，则每m分钟运行一次" />
+                                        <TextBlock Grid.Row="27" Grid.Column="0" ToolTip="RunHours (/RH:hhmm-hhmm)" Text="*指定可以启动新副本的运行时间" />
+                                        <TextBlock Grid.Row="28" Grid.Column="0" ToolTip="Checks run times on a per-file (not per-pass) basis. (/pf)" Text="*检查每个文件的运行时间 (而不是每个通道)。" />
+                                        <TextBlock  Grid.Row="29" Grid.Column="0" ToolTip="(/ipg：n)" Text="@指定在慢速线路上释放带宽的数据包间间隔"></TextBlock>
+                                        <TextBlock  Grid.Row="30" Grid.Column="0" ToolTip="(/sl)" Text="请勿关注符号链接，而是创建链接的副本。"></TextBlock>
+                                        <TextBlock  Grid.Row="31" Grid.Column="0" ToolTip="Copies no directory info (the default /dcopy:DA is done).(/nodcopy)" Text="*不复制文件信息（默认/dcopy:DA 的效果）"></TextBlock>
+                                        <TextBlock  Grid.Row="32" Grid.Column="0" ToolTip="(/nooffload)" Text="*复制文件时不复制Windows复制卸载机制"></TextBlock>
+                                        <TextBlock  Grid.Row="33" Grid.Column="0" ToolTip="(/compress)" Text="*在文件传输期间请求网络压缩（如果适用）"></TextBlock>
+
+                                        <GridSplitter Width="5" Grid.Row="0" Grid.RowSpan="100" Grid.Column="1" ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" />
+
+                                        <TextBox Grid.Row="0" Grid.Column="2" x:Name="FileFilter" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="1" Grid.Column="2" x:Name="CopySubDirectories" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="2" Grid.Column="2" x:Name="CopySubdirectoriesIncludingEmpty" Margin="10,0,0,0" />
+                                        <TextBox Grid.Row="3" Grid.Column="2" x:Name="Depth" Margin="10,0,0,0" PreviewTextInput="IsNumeric_PreviewTextInput" Width="50" HorizontalAlignment="Left" />
+                                        <CheckBox Grid.Row="4" Grid.Column="2" x:Name="EnableRestartMode" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="5" Grid.Column="2" x:Name="EnableBackupMode" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="6" Grid.Column="2" x:Name="EnableRestartModeWithBackupFallback" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="7" Grid.Column="2" x:Name="UseUnbufferedIo" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="8" Grid.Column="2" x:Name="EnableEfsRawMode" Margin="10,0,0,0" />
+                                        <TextBox Grid.Row="9" Grid.Column="2" x:Name="CopyFlags" Margin="10,0,0,0" PreviewTextInput="IsCopyFlag_PreviewTextInput" Width="100" HorizontalAlignment="Left" />
+                                        <CheckBox Grid.Row="10" Grid.Column="2" x:Name="CopyFilesWithSecurity" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="11" Grid.Column="2" x:Name="CopyAll" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="12" Grid.Column="2" x:Name="RemoveFileInformation" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="13" Grid.Column="2" x:Name="FixFileSecurityOnAllFiles" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="14" Grid.Column="2" x:Name="FixFileTimesOnAllFiles" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="15" Grid.Column="2" x:Name="Purge" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="16" Grid.Column="2" x:Name="Mirror" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="17" Grid.Column="2" x:Name="MoveFiles" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="18" Grid.Column="2" x:Name="MoveFilesAndDirectories" Margin="10,0,0,0" />
+                                        <TextBox Grid.Row="19" Grid.Column="2" x:Name="AddAttributes" Margin="10,0,0,0" PreviewTextInput="IsAttribute_PreviewTextInput" Width="100" HorizontalAlignment="Left" />
+                                        <TextBox Grid.Row="20" Grid.Column="2" x:Name="RemoveAttributes" Margin="10,0,0,0" PreviewTextInput="IsAttribute_PreviewTextInput" Width="100" HorizontalAlignment="Left" />
+                                        <CheckBox Grid.Row="21" Grid.Column="2" x:Name="CreateDirectoryAndFileTree" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="22" Grid.Column="2" x:Name="FatFiles" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="23" Grid.Column="2" x:Name="TurnLongPathSupportOff" Margin="10,0,0,0" />
+                                        <TextBox Grid.Row="24" Grid.Column="2" x:Name="MonitorSourceChangesLimit" Margin="10,0,0,0" PreviewTextInput="IsNumeric_PreviewTextInput" Width="50" HorizontalAlignment="Left" />
+                                        <TextBox Grid.Row="25" Grid.Column="2" x:Name="MonitorSourceTimeLimit" Margin="10,0,0,0" PreviewTextInput="IsNumeric_PreviewTextInput" Width="50" HorizontalAlignment="Left" />
+                                        <TextBox Grid.Row="26" Grid.Column="2" x:Name="RunHoursStartTime" Margin="10,0,0,0" PreviewTextInput="IsNumeric_PreviewTextInput" Width="50" HorizontalAlignment="Left" />
+                                        <TextBlock Grid.Row="26" Grid.Column="2" Text="-" Margin="62,2,0,0" />
+                                        <TextBox Grid.Row="26" Grid.Column="2" x:Name="RunHoursEndTime" Margin="70,0,0,0" PreviewTextInput="IsNumeric_PreviewTextInput" Width="50" HorizontalAlignment="Left" />
+                                    </Grid>
+                                </Expander>
+                                <Expander Background="LightGreen" Header="文件选择选项" ToolTip="Select Options">
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Row="0" Grid.Column="0" ToolTip="Only Copy Archive Files (/A)" Text="*仅复制设置了 Archive 属性的文件" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" ToolTip="Only Copy Archive Files And Reset Archive Flag (/M)" Text="仅复制设置了 Archive 属性的文件，&#x0a;并重置 Archive 属性。" />
+                                        <TextBlock Grid.Row="2" Grid.Column="0" ToolTip="Include Attributes (/IA:attributes)" Text="仅包括设置了任何指定属性的文件。" />
+                                        <TextBlock Grid.Row="3" Grid.Column="0" ToolTip="Exclude Attributes (/XA:attributes)" Text="排除设置了任何指定属性的文件" />
+                                        <TextBlock Grid.Row="4" Grid.Column="0" ToolTip="Exclude Files (/XF File File ...)" Text="排除指定名称或匹配的文件" />
+                                        <TextBlock Grid.Row="5" Grid.Column="0" ToolTip="Exclude Directories (/XD Dir Dir ...)" Text="排除指定名称或匹配的目录" />
+                                        <TextBlock Grid.Row="6" Grid.Column="0" ToolTip="Include modified files (differing change times)(/im)" Text="包括修改后的文件 (不同的更改) " />
+                                        <!--
+                                        (/xc) Excludes changed files.:Excludes existing files with the same timestamp, but different file sizes.
+                                        (/xn) Excludes newer files.:Excludes existing files newer than the copy in the source directory.
+                                        (/xo) Excludes older files.:Excludes existing files older than the copy in the source directory.
+                                        (/xx) Excludes extra files and directories.:Excludes extra files and directories present in the destination but not the source. Excluding extra files will not delete files from the destination.
+                                        (/xl) Excludes "lonely" files and directories.:	Excludes "lonely" files and directories present in the source but not the destination. Excluding lonely files prevents any new files from being added to the destination.
+                                        (/is) Includes the same files.Includes the same files. Same files are identical in name, size, times, and all attributes.
+                                        (/it) Includes tweaked files.Includes "tweaked" files. Tweaked files have the same name, size, and times, but different attributes.
+                                        
+                                        (/xn) 只复制源目录修改日期在目标目录修改日期之前的文件。相当于目标目录还原为源目录。
+                                        (/xo) 只复制源目录修改日期在目标目录修改日期之后的文件。就是正常理解里的将原目录更新到目标目录
+                                        (/xx) 排除目标中存在但源中不存在的额外文件和目录。这些额外的文件不会从目标中删除文件。不明白有什么实际作用。测试了一下效果。如果不加/xx，多余文件会在cmd结果中列出来。但也不会被删除。加了/xx，cmd的结果中就不会列出来了
+                                        (/xl) 排除源中存在但目标中不存在的文件和目录。我的理解是，源和目标中文件都存在但不一样，不管谁先谁后，把源中的文件复制，覆盖到目标中。
+                                        (/is) 包括相同的文件。 相同的文件在名称、大小、时间以及所有属性上是相同的。我不懂这个都一样还复制啥。感觉好像就是为了获取哪些一样。而且即使不相同，也会被复制为相同的。
+                                        (/it)包括"调整"文件。 调整后的文件具有相同的名称、大小和时间，但属性不同。
+                                        -->
+                                        <TextBlock Grid.Row="7" Grid.Column="0" ToolTip="Excludes changed files.(/xc)" Text="排除具有相同时间戳但文件大小不同的现有文件" />
+                                        <TextBlock Grid.Row="8" Grid.Column="0" ToolTip="Excludes newer files.(/xn)" Text="只复制源目录修改日期在目标目录修改日期之前的文件" />
+                                        <TextBlock Grid.Row="9" Grid.Column="0" ToolTip="Exclude older files.(/xo)" Text="只复制源目录修改日期在目标目录修改日期之后的文件" />
+                                        <TextBlock Grid.Row="10" Grid.Column="0" ToolTip="Excludes extra files and directories(/xx)" Text="排除目标中存在但源中不存在的额外文件和目录。" />
+                                        <TextBlock Grid.Row="11" Grid.Column="0" ToolTip="Excludes lonely files and directories.(/xl)" Text="排除源中存在但目标中不存在的文件和目录。" />
+                                        <TextBlock Grid.Row="12" Grid.Column="0" ToolTip="Includes the same files.(/is)" Text="包括相同的文件。" />
+                                        <TextBlock Grid.Row="13" Grid.Column="0" ToolTip="Includes tweaked files.(/it)" Text="包括调整文件。" />
+                                        <TextBlock Grid.Row="14" Grid.Column="0" ToolTip="exclude files bigger than n bytes.(/max:n)" Text="排除大于n字节的文件" />
+                                        <TextBlock Grid.Row="15" Grid.Column="0" ToolTip="exclude files smaller than n bytes.(/min:n)" Text="排除小于n字节的文件" />
+                                        <TextBlock Grid.Row="16" Grid.Column="0" ToolTip="exclude files older than n days or date,(/maxage:n)" Text="复制所有修改日期在距今n天之内，或在设定日期之后的文件" />
+                                        <TextBlock Grid.Row="17" Grid.Column="0" ToolTip="exclude files newer than n days or date.(/minage:n)" Text="复制所有修改日期距今n天之外，或在设定日期之前的文件" />
+                                        <TextBlock Grid.Row="18" Grid.Column="0" ToolTip="excludes files unused since n.(/maxlad:n)" Text="复制所有最后访问日期距今n天之内，或在设定日期之后的文件" />
+                                        <TextBlock Grid.Row="19" Grid.Column="0" ToolTip="excludes files used since n.(/minlad:n)" Text="复制所有最后访问日期距今n天之外，或在设定日期之前的文件" />
+                                        <!--
+                                        （/maxage:n） 。 xxx可以是天数或者日期。小于1900表示天数。大于1900就必须是yyyymmdd的日期格式。
+	                                            该选项会剔除所有修改日期距现在大于这个天数或修改日期早于该设定日期的文件。
+	                                            这个逻辑清晰又不完全清晰。
+	                                            理解一下，简单来说。日期比较好理解。就是复制所有修改日期晚于设定日期的文件。
+	                                            天数就是复制所有修改日期在距今设定天数之内的文件。
+	                                            注意：①修改日期包括创建，也就是新建的文件也会复制。②不知道这个天数的界定会不会包含时间。
+                                        （/minage:n） 。与/maxage完全相反就是了。
+	                                            剔除所有修改日期距现在小于这个天数或修改日期晚于该设定日期的文件。
+	                                            也就是复制所有修改日期早于设定日期的文件。复制所有修改日期在距今设定天数之外的文件。
+                                        （/maxlad:n）：
+                                        （/minlad:n）：
+                                                这俩选择逻辑与/maxage与/minage完全一样。只不过判断标准编程最后访问时间。
+                                        
+                                        -->
+                                        <TextBlock Grid.Row="20" Grid.Column="0" ToolTip="Excludes junction points, which are normally included by default.(/xj)" Text="排除联接点，默认情况下这些联接点通常包括在内。" />
+                                        <TextBlock Grid.Row="21" Grid.Column="0" ToolTip="Assumes FAT file times (two-second precision).(/fft)" Text="采用 FAT 文件时间（精度为两秒）" />
+                                        <TextBlock Grid.Row="22" Grid.Column="0" ToolTip="Compensates for one-hour DST time differences.(/dsf)" Text="补偿一小时的 DST 时间差异" />
+                                        <TextBlock Grid.Row="23" Grid.Column="0" ToolTip="Excludes junction points for directories.(xjd)" Text="排除目录的联接点。" />
+                                        <TextBlock Grid.Row="24" Grid.Column="0" ToolTip="	Excludes junction points for files.(/xjf)" Text="排除文件的联接点。" />
+                                        <!--
+                                        junction points。这个不看英文根本不知道啥意思；
+                                        它被翻译为各种名词，连接点，交接点，再分析点等等。反正直接通过中文去查基本查不到，直接查junction points还可以获取一些有用信息。
+                                        交接点（Junction），也称为“再分析点”，是 NTFS 3.0 及以上文件系统（Windows 2000 及以上系统）的特性，
+                                        它是链接本地目录（可跨卷）的访问点，通过交接点的操作都会被系统映射到实际的目录上。
+                                        通过建立交接点，可以在保证一个目录实例（目录的一致性）的前提下，允许用户或程序从本地文件系统中的多个位置访问此目录。
+                                        讲的很清楚然而一句也不懂。
+                                        总之我的理解：因为系统操作的文件夹与旧系统不一样了，所以为win7及后续windows版本兼容旧系统的功能，就有了这个技术。
+                                        再简略一点，99%的情况我等人员应该用不上。
+                                        -->
+
+                                        <GridSplitter Width="5" Grid.Row="0" Grid.RowSpan="100" Grid.Column="1" ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" />
+
+                                        <CheckBox Grid.Row="0" Grid.Column="2" x:Name="OnlyCopyArchiveFiles" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="1" Grid.Column="2" x:Name="OnlyCopyArchiveFilesAndResetArchiveFlag" Margin="10,0,0,0" />
+                                        <TextBox Grid.Row="2" Grid.Column="2" x:Name="IncludeAttributes" Margin="10,0,0,0" PreviewTextInput="IsAttribute_PreviewTextInput" Width="100" HorizontalAlignment="Left" />
+                                        <TextBox Grid.Row="3" Grid.Column="2" x:Name="ExcludeAttributes" Margin="10,0,0,0" PreviewTextInput="IsAttribute_PreviewTextInput" Width="100" HorizontalAlignment="Left" />
+                                        <TextBox Grid.Row="4" Grid.Column="2" x:Name="ExcludeFiles" Margin="10,0,0,0" ToolTip="Separate entries with space or comma&#x0a;If filename or path contains spaces then enclose in quotes&#x0a;e.g. &quot;my file.txt&quot;,file1.txt file2.txt"/>
+                                        <TextBox Grid.Row="5" Grid.Column="2" x:Name="ExcludeDirectories" Margin="10,0,0,0" ToolTip="Separate entries with space or comma&#x0a;If filename or path contains spaces then enclose in quotes&#x0a;e.g. &quot;my file.txt&quot;,file1.txt file2.txt"/>
+                                        <CheckBox Grid.Row="6" Grid.Column="2" x:Name="ExcludeOlder" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="7" Grid.Column="2" x:Name="ExcludeNewer" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="8" Grid.Column="2" x:Name="ExcludeJunctionPoints" Margin="10,0,0,0" />
+
+                                    </Grid>
+                                </Expander>
+                                <Expander Background="PaleGoldenrod" ToolTip="Retry Options" Header="重试选项">
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Row="0" Grid.Column="0" ToolTip="Retry Count (/R:N)" Text="设定复制失败时的重试次数，默认1000000次" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" ToolTip="Retry Wait Time (/W:N)" Text="设定重试时的间隔时间，默认30秒" />
+                                        <TextBlock Grid.Row="2" Grid.Column="0" ToolTip="Saves the values as default settings in the registry(/reg)" Text="将/r和/w选项中设定的值保存为注册表中的默认设置" />
+                                        <TextBlock Grid.Row="3" Grid.Column="0" ToolTip="(/tbd)" Text="指定系统将等待定义共享名称 (重试错误 67) 。" />
+                                        <!--
+                                        (/tbd) Specifies that the system will wait for share names to be defined (retry error 67).我是真没理解上去这句话啥意思
+                                        -->
+
+                                        <GridSplitter Width="5" Grid.Row="0" Grid.RowSpan="100" Grid.Column="1" ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" />
+
+                                        <TextBox Grid.Row="0" Grid.Column="2" x:Name="RetryCount" Margin="10,0,0,0" PreviewTextInput="IsNumeric_PreviewTextInput" Width="50" HorizontalAlignment="Left" />
+                                        <TextBox Grid.Row="1" Grid.Column="2" x:Name="RetryWaitTime" Margin="10,0,0,0" PreviewTextInput="IsNumeric_PreviewTextInput" Width="50" HorizontalAlignment="Left" />
+
+                                    </Grid>
+
+                                </Expander>
+                                <Expander Background="LightGray" Header="日志记录选项" ToolTip="Logging Options">
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Row="0" Grid.Column="0" ToolTip="List Only (/L)" Text="只输出匹配条件的列表，不进行复制，删除，打时间戳等实际操作。" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" ToolTip="Reports all extra files,(/x)" Text="报告所有的多余文件。而不仅仅是所选的文件。" />
+                                        <!--具体效果是啥有点疑问：猜测时正常只会显示符合条件的文件。而加了/x就会无视筛选条件，显示多余文件-->
+                                        <TextBlock Grid.Row="2" Grid.Column="0" ToolTip="Verbose Output (/V)" Text="生成详细输出" />
+                                        <TextBlock Grid.Row="3" Grid.Column="0" ToolTip="Shows source file time stamps(/ts)" Text="输出中显示源文件的时间戳" />
+                                        <TextBlock Grid.Row="4" Grid.Column="0" ToolTip="Shows source file full paths names(/fp)" Text="输出中显示源文件的全名称（文件路径 + 文件名）" />
+                                        <TextBlock Grid.Row="5" Grid.Column="0" ToolTip="Prints sizes, as bytes(/bytes)" Text="输出中的所选文件大小以字节显示" />
+                                        <TextBlock Grid.Row="6" Grid.Column="0" ToolTip="No File Size (/NS)" Text="输出中不显示所选文件的大小" />
+                                        <TextBlock Grid.Row="7" Grid.Column="0" ToolTip="No File Classes (/nc)" Text="输出中不显示所选文件的类型。" />
+                                        <!--就是新文件，旧文件，多余文件那些分类-->
+                                        <TextBlock Grid.Row="8" Grid.Column="0" ToolTip="No File Names (/nfl)" Text="输出中不显示所选文件名" />
+                                        <TextBlock Grid.Row="9" Grid.Column="0" ToolTip="No directory  Names (/ndl)" Text="输出中不显示所选目录名" />
+                                        <TextBlock Grid.Row="10" Grid.Column="0" ToolTip="No Progress (/NP)" Text="输出中不显示复制进度" />
+                                        <TextBlock Grid.Row="11" Grid.Column="0" ToolTip="Shows estimated time of copied files" Text="输出中显示复制文件的语句到达时间" />
+                                        <TextBlock Grid.Row="12" Grid.Column="0" ToolTip="Generate log file:cover(/log&lt;logfile>)" Text="将输出写入日志文件（覆盖原文件）" />
+                                        <TextBlock Grid.Row="13" Grid.Column="0" ToolTip="Generate log file:append(/log+&lt;logfile>)" Text="将输出写入日志文件（追加到原文件后）" />
+                                        <TextBlock Grid.Row="14" Grid.Column="0" ToolTip="Shows as Unicode text" Text="输出显示为Unicode文本" />
+                                        <TextBlock Grid.Row="15" Grid.Column="0" ToolTip="Generate Unicode log file:cover(/unilog&lt;logfile>)" Text="将输出以Unicode格式写入日志文件（覆盖原文件）" />
+                                        <TextBlock Grid.Row="16" Grid.Column="0" ToolTip="Generate Unicode log file:cover(/unilog+&lt;logfile>)" Text="将输出以Unicode格式写入日志文件（追加到原文件后）" />
+                                        <TextBlock Grid.Row="17" Grid.Column="0" ToolTip="Writes output to the console window" Text="将输出打印在cmd中。使用了以上4中log输出文件后，cmd中&#x0a;就没显示了。使用/tee就可以即在cmd中打印，又生成文件" />
+                                        <TextBlock Grid.Row="18" Grid.Column="0" ToolTip="no job header(/njh)" Text="输出中不显示标头。也就是初始工具名，参数那一堆。" />
+                                        <!--
+                                        也就是
+                                        ROBOCOPY     ::     Windows 的可靠文件复制
+                                        开始时间，源，目标，选项这一堆
+                                        -->
+                                        <TextBlock Grid.Row="19" Grid.Column="0" ToolTip="no job summary(/njs)" Text="输出中不显示结尾。也就最后。目录数，文件数成功失败那一堆。" />
+
+                                        <GridSplitter Width="5" Grid.Row="0" Grid.RowSpan="100" Grid.Column="1" ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" />
+
+                                        <CheckBox Grid.Row="0" Grid.Column="2" x:Name="VerboseOutput" Margin="10,0,0,0" IsChecked="True" />
+                                        <CheckBox Grid.Row="1" Grid.Column="2" x:Name="NoFileSizes" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="2" Grid.Column="2" x:Name="NoProgress" Margin="10,0,0,0" />
+                                        <CheckBox Grid.Row="3" Grid.Column="2" x:Name="ChkListOnly" Margin="10,0,0,0" />
+
+                                    </Grid>
+                                </Expander>
+                            </StackPanel>
+                            <!-- Single Job GroupBox -->
+                            <GroupBox Header="Single Job ( RoboCommand )"  Grid.Row="5" Margin="34,0,0,5" Height="60" Width="Auto"  HorizontalAlignment="Left" VerticalAlignment="Top"  Grid.ColumnSpan="2">
+                                <Grid>
+                                    <Button Content="Load Job" HorizontalAlignment="Left" Margin="20,10,30,0" VerticalAlignment="Top" Width="75" Click="BtnLoadJob_Click"/>
+                                    <Button Content="Save Job" HorizontalAlignment="Left" Margin="115,10,30,0" VerticalAlignment="Top" Width="75" Click="BtnSaveJob_Click"/>
+                                    <Button Content="Start Job" HorizontalAlignment="Left" Margin="205,10,20,0" VerticalAlignment="Top" Width="75" Click="StartButton_Click"/>
+                                </Grid>
+                            </GroupBox>
+                            <!-- Multi-Job GroupBox -->
+                            <GroupBox Header="Multiple Jobs ( RoboQueue )"  Grid.Row="6" Margin="34,10,0,0" Height="Auto" Width="Auto"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2">
+                                <Grid IsSharedSizeScope="True">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="50"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="200"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="btnAddToQueue" Content="Add to Queue" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="98" Click="btn_AddToQueue"/>
+                                    <Button x:Name="btnReplaceSelected" Content="Update Selected"  Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="98" Click="btn_ReplaceSelected" />
+                                    <Button x:Name="btnRemoveSelectedJob" Content="Remove Selected" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="98" Click="btn_RemoveSelected"/>
+                                    <Button x:Name="btnLoadSelectedJob" Content="Load Selected" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="98" Click="btn_LoadSelected" />
+                                    <!-- Concurrent Jobs -->
+                                    <Label x:Name="lbloncurrentJobs" Content="Commands to run at once (0 = all):" Grid.Row="3" Grid.Column="2" Margin="0,0,0,73" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+                                    <ComboBox x:Name="cmbConcurrentJobs_OptionsPage" Grid.Row="3" Grid.Column="3"  Margin="34,0,0,46"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="40" SelectionChanged="MultiJob_ConcurrentAmountChanged" RenderTransformOrigin="-1.375,0.727" />
+                                    <!-- Start Queue Options -->
+                                    <CheckBox x:Name="chkListOnly" Content="ListOnly Mode"  Grid.Row="3" Grid.Column="2"  Margin="5,0,0,46" HorizontalAlignment="Left" VerticalAlignment="Bottom" FlowDirection="RightToLeft" Checked="chkListOnly_Checked" Unchecked="chkListOnly_UnChecked" RenderTransformOrigin="0.175,-1.267" />
+                                    <Button x:Name="btnStartJobQueue" Content="Start Job Queue" Grid.Row="3" Grid.Column="2" Margin="96,0,38,10"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="98" Click="btn_StartQueue" Grid.ColumnSpan="2"/>
+                                    <!-- Listbox Header-->
+                                    <Grid Margin="38,0,0,0" Grid.Row="2" Width="410" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="ListBoxColumn1"/>
+                                            <ColumnDefinition SharedSizeGroup="ListBoxColumn2"/>
+                                            <ColumnDefinition SharedSizeGroup="ListBoxColumn3"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Content="Job Name" HorizontalAlignment="Left" Width="Auto" Visibility="Visible"/>
+                                        <Label Grid.Column="2" Content="Parameters" HorizontalAlignment="Left" Width="Auto"/>
+                                    </Grid>
+                                    <!-- https://stackoverflow.com/questions/8911026/multicolumn-listbox-in-wpf -->
+                                    <ListBox x:Name="ListBox_RoboQueueJobs_OptionsPage" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0"  SelectionChanged="RoboQueueListBoxSelectionChanged">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Height="20">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="ListBoxColumn1"/>
+                                                        <ColumnDefinition Width="15" SharedSizeGroup="ListBoxColumn2"/>
+                                                        <ColumnDefinition Width="*" SharedSizeGroup="ListBoxColumn3"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <!-- Bind to the NAME property -->
+                                                    <TextBlock Grid.Column="0" Text="{Binding Path=Name}"/>
+                                                    <!-- Bind to the ToString method-->
+                                                    <TextBlock Grid.Column="2" Text="{Binding}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="RoboSharp Debugging"  Grid.Row="6" Margin="345,10,0,0" Height="302" Width="189"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1">
+                                <CheckBox x:Name="chk_SaveEventLogs" Content="EventLogging" ToolTip="Create LogFiles for OnCopyProgressChanged and OnFileProcessed"  Margin="85,0,-2,253" HorizontalAlignment="Left" VerticalAlignment="Bottom" FlowDirection="RightToLeft" RenderTransformOrigin="0.175,-1.267" x:FieldModifier="public"/>
+                            </GroupBox>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <!-- Single-Job Tab -->
+            <TabItem x:Name="SingleJobTab" Header="Single Job ( RoboCommand )" >
+                <Grid x:Name="SingleJobTabGrid" Background="#FFE5E5E5">
+                    <ScrollViewer HorizontalAlignment="Center" Height="Auto" Margin="0,10,5,0" VerticalAlignment="Top" Width="693" Grid.ColumnSpan="4">
+                        <StackPanel>
+                            <local:MultiJob_CommandProgressIndicator x:Name="SingleJobExpander_Progress" RenderTransformOrigin="0.5,0.5" Background="LightBlue"/>
+                            <Expander x:Name="SingleJobExpander_Errors" Background="LightGreen" Header="Errors">
+                                <DataGrid x:Name="SingleJobErrorGrid" MinHeight="100" Margin="10"/>
+                            </Expander>
+                            <local:JobHistoryExpander x:Name="SingleJobExpander_JobHistory" RenderTransformOrigin="0.5,0.5"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <!-- Multi-Job Tab -->
+            <TabItem x:Name="MultiJobProgressTab" Header="Multi-Job ( RoboQueue )">
+                <Grid Margin="5" Background="#FFE5E5E5">
+                    <ScrollViewer HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch">
+                        <StackPanel>
+                            <!-- RoboQueue Panel -->
+                            <Expander x:Name="MultiJobExpander_Jobs" Background="LightBlue" Header="RoboQueue" RenderTransformOrigin="0.5,0.5">
+                                <Grid Margin="15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="150"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="300"/>
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <!-- ListBox / Edit / Remove buttons -->
+                                    <ListBox x:Name="ListBox_RoboQueueJobs_MultiJobPage" Grid.Row="0" Grid.Column="0" SelectionChanged="RoboQueueListBoxSelectionChanged"/>
+                                    <Button x:Name="btnUpdateSelectedJob_Copy" Content="Update Selected" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="98" Click="btn_LoadSelected"/>
+                                    <Button x:Name="btnRemoveSelectedJob_Copy" Content="Remove Selected" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="98" Click="btn_RemoveSelected"/>
+                                    <!-- Commands Count To Run -->
+                                    <Label x:Name="lblConcurrentJobs_Copy" Grid.Row="0" Grid.Column="1"  Margin="5,0,40,0" Content="Commands to run at once (0 = all):" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                    <ComboBox x:Name="cmbConcurrentJobs_MultiJobPage" Grid.Row="0" Grid.Column="1" Margin="0,5,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="40" SelectionChanged="MultiJob_ConcurrentAmountChanged"/>
+                                    <!-- ListOnly and Start Btn -->
+                                    <CheckBox x:Name="chkListOnly_Copy" Grid.Row="0" Grid.Column="1"  Margin="0,0,13,30" Content="ListOnly Mode" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="chkListOnly_Checked" Unchecked="chkListOnly_UnChecked"/>
+                                    <Button x:Name="btnStartJobQueue_Copy" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="110" Content="Start Job Queue" Click="btn_StartQueue"/>
+                                    <Button x:Name="btnPauseQueue" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" Content="Pause Job Queue" HorizontalAlignment="Right" Width="110" Click="btn_PauseResumeQueue"/>
+                                </Grid>
+                            </Expander>
+                            <!-- Progress Expander -->
+                            <Expander x:Name="MultiJobExpander_Progress" Background="LightBlue" Header="Progress" RenderTransformOrigin="0.5,0.5">
+                                <Grid IsEnabled="true" Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <!-- 0 -->
+                                        <RowDefinition MinHeight="30"/>
+                                        <!--Estimators -->
+                                        <RowDefinition MinHeight="140"/>
+                                        <!-- 2 & 3 - ProgressBar & Label -->
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <!-- 4 - Spacer between PB & Command Progress Expanders-->
+                                        <RowDefinition Name="MultiProgressBufferRow" MinHeight="10"/>
+                                        <!-- 5+ - ProgressExpanders - 1 per job in queue -->
+                                        <RowDefinition x:Name="FirstMultiProgressExpander"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="Number of jobs running:" Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" FontWeight="Bold"/>
+                                    <TextBlock Name="MultiJob_JobRunningCount" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Foreground="#FF000099"/>
+                                    <!-- Overall Estimate Grid -->
+                                    <GroupBox Header="Total Estimate"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="650">
+                                        <Grid IsEnabled="true" Margin="15" VerticalAlignment="Center" Width="620"  HorizontalAlignment="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition  Width="10"/>
+                                                <ColumnDefinition  Width="175"/>
+                                                <ColumnDefinition  Width="175"/>
+                                                <ColumnDefinition  Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock x:Name="ProgressEstimator_Directories" Grid.Column="1" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Width="150" Height="120" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Text="Directories"/>
+                                            <TextBlock x:Name="ProgressEstimator_Files" Grid.Column="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Width="150" Height="120" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Text="Files"/>
+                                            <TextBlock x:Name="ProgressEstimator_Bytes" Grid.Column="3" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Width="150" Height="120" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Text="Bytes"/>
+                                        </Grid>
+                                    </GroupBox>
+                                    <!-- Progress Bar -->
+                                    <TextBlock Text="Jobs Complete:" Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" FontWeight="Bold"/>
+                                    <TextBlock x:Name="MultiJob_JobsCompleteXofY" Grid.Row="2" Grid.Column="1" FontWeight="Bold" TextAlignment="Right" HorizontalAlignment="Left" TextWrapping="Wrap" />
+                                    <ProgressBar x:Name="MultiJobProgressBar_JobsComplete" Grid.Row="3" Grid.ColumnSpan="2" Minimum="0" Maximum="100" HorizontalAlignment="Center" Height="20" Width="625"/>
+                                    <!-- Command Progress -->
+                                    <ScrollViewer Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                        <StackPanel Name="RoboQueueProgressStackPanel" >
+                                            <local:MultiJob_CommandProgressIndicator HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="600"/>
+                                            <local:MultiJob_CommandProgressIndicator HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="600"/>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Expander>
+                            <!-- End Of Progress Expander -->
+                            <Expander x:Name="MultiJobExpander_Errors" Background="LightGreen" Header="Errors">
+                                <DataGrid x:Name="MultiJobErrorGrid" MinHeight="100" Margin="10"/>
+                            </Expander>
+                            <local:JobHistoryExpander x:Name="MultiJob_ListOnlyResults" Header="List-Only Results" RenderTransformOrigin="0.5,0.5"/>
+                            <local:JobHistoryExpander x:Name="MultiJob_RunResults" Header="Run Results" RenderTransformOrigin="0.5,0.5"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
